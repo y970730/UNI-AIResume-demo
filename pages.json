@@ -1,0 +1,73 @@
+{
+	// 这里是配置每个页面的显示路径 和style（说明见下面，相当于可以配置样式的vuerouter
+	// 注意，任何新页面必须在pages项里进行注册
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/talk/talk",
+			// 对应页面的局部配置，会覆盖下面的globalStyle
+			"style": {
+				"navigationBarTitleText": "page1"
+			}
+		},
+		{
+			"path": "pages/folder/folder",
+			"style": {
+				"navigationBarTitleText": "page2"
+			}
+		}, {
+			"path": "pages/person/person",
+			"style": {
+				"navigationBarTitleText": "page3"
+				// "enablePullDownRefresh": false
+			}
+
+		}
+	],
+	"globalStyle": {
+		// 颜色名只支持 H5，wx只能十六进制，去看wx小程序文档
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "black", // 未选中时文字颜色
+		"selectedColor": "#2f6f2d", // 选中时文字颜色
+		"backgroundColor": "pink", // 背景颜色
+		"borderStyle": "red", // 顶部边框颜色
+		"fontSize": "10px",
+		// list is necessary in tabbar 
+		"list": [{
+				"pagePath": "pages/talk/talk",
+				// text can be any words you want
+				"text": "对话",
+				"iconPath": "static/Talk.png",
+				"selectedIconPath": "static/Talk-Checked..png"
+			},
+			{
+				"pagePath": "pages/folder/folder",
+				"text": "文件",
+				"iconPath": "static/Folder.png",
+				"selectedIconPath": "static/Folder-Checked.png"
+			},
+			{
+				"pagePath": "pages/person/person",
+				"text": "我的",
+				"iconPath": "static/Person.png",
+				"selectedIconPath": "static/Person-Checked..png"
+			}
+		]
+	},
+	"subPackages": [{
+		"root": "subpkg_task",
+		"pages": [{
+			"path": "rootpkg/rootpkg",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}]
+	}],
+	"uniIdRouter": {}
+}
