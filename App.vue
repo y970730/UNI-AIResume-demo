@@ -3,7 +3,7 @@
 		// 相当于小程序app.js
 		// 这里负责监听整个程序的全局生命周期
 		onLaunch: function () {
-			console.log('App Launch, 全局App加载周期1')
+			console.log('App Launch, 全局App加载周期')
 		},
 		onShow: function () {
 			console.log('App Show, 全局App显示周期')
