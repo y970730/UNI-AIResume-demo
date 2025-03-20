@@ -2,3 +2,4 @@ uni_modules/
 .DS_Store
 unpackage/*
 !unpackage/res/
+manifest.json
