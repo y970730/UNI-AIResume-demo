@@ -1,4 +1,4 @@
-node_modules
+uni_modules/
 .DS_Store
 unpackage/*
-!unpackage/res
+!unpackage/res/
