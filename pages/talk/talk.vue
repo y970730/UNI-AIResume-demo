@@ -1,12 +1,3 @@
-<template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{test}}</text>
-		</view>
-	</view>
-</template>
-
 <script setup>
 	import {
 		onLoad,
@@ -22,6 +13,14 @@
 		})
 	})
 </script>
+<template>
+	<view class="content">
+		<image class="logo" src="/static/logo.png"></image>
+		<view class="text-area">
+			<text class="title">{{test}}</text>
+		</view>
+	</view>
+</template>
 
 <style lang="scss">
 	.content {

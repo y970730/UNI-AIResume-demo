@@ -2,20 +2,20 @@
 	<view class="content">
 		<image class="logo" src="/static/logo.png"></image>
 		<view class="text-area">
-			<text class="title">{{test}}</text>
+			<text class="title">{{ test }}</text>
 		</view>
 	</view>
 </template>
 
 <script setup>
-	import {
-		onLoad,
-		onShow
-	} from '@dcloudio/uni-app'
-	import {
-		ref
-	} from 'vue'
+	import { onLoad, onShow } from '@dcloudio/uni-app'
+	import { ref } from 'vue'
+	// 导入 request 模块
+	import request from '@/utils/request.js'
 	const test = ref('ref测试信息')
+	onLoad(() => {
+		request.get('/api/province')
+	})
 	onShow(() => {
 		// 弹窗
 		uni.showToast({

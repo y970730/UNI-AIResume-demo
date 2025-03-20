@@ -14,9 +14,20 @@
 	}
 </script>
 <!-- app.vue中不能写template！！只能有script 和 style！！ -->
-<style>
+<style lang='scss'>
 	/*每个页面公共css，即全局css全部写在这里 */
 	@import './fonts.scss';
+
+	/* 暂时不知道什么作用 */
+	button::after {
+		display: none;
+	}
+
+	cover-view {
+		/* #ifndef APP-PLUS*/
+		overflow: visible;
+		/* #endif */
+	}
 
 	/* 等待适配 */
 	/*每个页面公共css */

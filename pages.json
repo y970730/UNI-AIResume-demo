@@ -1,5 +1,14 @@
 {
 	// 这里是配置每个页面的显示路径 和style（说明见下面，相当于可以配置样式的vuerouter
+	// condition是给小程序开发者工具调试使用的页面切换功能
+	"condition": {
+		"current": 0,
+		"list": [{
+			"name": "登录",
+			"path": "pages/login/login",
+			"query": ""
+		}]
+	},
 	// 注意，任何新页面必须在pages项里进行注册
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
@@ -39,9 +48,11 @@
 	},
 	"tabBar": {
 		"color": "black", // 未选中时文字颜色
-		"selectedColor": "#2f6f2d", // 选中时文字颜色
-		"backgroundColor": "pink", // 背景颜色
-		"borderStyle": "red", // 顶部边框颜色
+		"selectedColor": "#ffa500", // 选中时文字颜色
+		// #ifndef VUE3
+		"backgroundColor": "#ffa500", // 背景颜色
+		// #endif
+		"borderStyle": "black", // 顶部边框颜色
 		"fontSize": "10px",
 		// list is necessary in tabbar 
 		"list": [{
