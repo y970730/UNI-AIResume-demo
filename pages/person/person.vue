@@ -14,7 +14,11 @@
 	import request from '@/utils/request.js'
 	const test = ref('ref测试信息')
 	onLoad(() => {
-		request.get('/api/province')
+		// then为utils.js封装测试，包含dayjs、toast封装
+		console.log(uni.utils.formatTime(new Date()))
+		request.get('/api/province').then((res) => {
+			uni.utils.toast()
+		})
 	})
 	onShow(() => {
 		// 弹窗
