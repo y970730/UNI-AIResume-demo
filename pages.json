@@ -48,7 +48,7 @@
 	},
 	"tabBar": {
 		"color": "black", // 未选中时文字颜色
-		"selectedColor": "#ffa500", // 选中时文字颜色
+		"selectedColor": "#78c5c0", // 选中时文字颜色 $uni-color-primary: #78c5c0
 		// #ifndef VUE3
 		"backgroundColor": "#ffa500", // 背景颜色
 		// #endif
@@ -60,7 +60,7 @@
 				// text can be any words you want
 				"text": "对话",
 				"iconPath": "static/Talk.png",
-				"selectedIconPath": "static/Talk-Checked..png"
+				"selectedIconPath": "static/Talk-Checked.png"
 			},
 			{
 				"pagePath": "pages/folder/folder",
@@ -72,7 +72,7 @@
 				"pagePath": "pages/person/person",
 				"text": "我的",
 				"iconPath": "static/Person.png",
-				"selectedIconPath": "static/Person-Checked..png"
+				"selectedIconPath": "static/Person-Checked.png"
 			}
 		]
 	},

@@ -2,7 +2,8 @@ import ajax from '@/uni_modules/u-ajax/'
 
 const instance = ajax.create({
 	// 改
-	baseURL: 'https://hmajax.itheima.net/'
+	// baseURL: 'https://hmajax.itheima.net/'
+	baseURL: 'http://192.168.28.49:8099/'
 })
 
 // 1. 请求拦截器

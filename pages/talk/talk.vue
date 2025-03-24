@@ -1,11 +1,6 @@
 <script setup>
-	import {
-		onLoad,
-		onShow
-	} from '@dcloudio/uni-app'
-	import {
-		ref
-	} from 'vue'
+	import { onLoad, onShow } from '@dcloudio/uni-app'
+	import { ref } from 'vue'
 	const test = ref('ref测试信息')
 	onShow(() => {
 		uni.showToast({
@@ -17,7 +12,7 @@
 	<view class="content">
 		<image class="logo" src="/static/logo.png"></image>
 		<view class="text-area">
-			<text class="title">{{test}}</text>
+			<text class="title">{{ test }}</text>
 		</view>
 	</view>
 </template>
