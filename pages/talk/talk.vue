@@ -2,11 +2,9 @@
 	import { onLoad, onShow } from '@dcloudio/uni-app'
 	import { ref } from 'vue'
 	const test = ref('ref测试信息')
-	onShow(() => {
-		uni.showToast({
-			title: 'Talk页面'
-		})
-	})
+	// onShow(() => {
+	// 	// uni.utils.toast('Talk页面')
+	// })
 	const goLogin = () => {
 		uni.navigateTo({
 			url: '/pages/login/login'
@@ -15,11 +13,19 @@
 </script>
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
+		<image
+			class="logo"
+			src="/static/logo.png"
+		></image>
 		<view class="text-area">
 			<text class="title">{{ test }}</text>
 		</view>
-		<button type="default" @click="goLogin">去登录</button>
+		<button
+			type="default"
+			@click="goLogin"
+		>
+			去登录
+		</button>
 	</view>
 </template>
 

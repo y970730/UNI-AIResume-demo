@@ -1,10 +1,12 @@
 <script setup>
 	import { ref } from 'vue'
+	import { loginApi } from '@/apis/login'
+	import { useUserInformation } from '@/stores/user.js'
 	// import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
 	// 1. set form data
 	const loginFormPhoneData = ref({
-		phoneNum: '',
-		code: ''
+		phoneNum: 'mrwhite',
+		code: '123123'
 	})
 	// 2. phone rules
 	const loginFormPhoneRules = ref({
@@ -12,11 +14,11 @@
 			rules: [
 				{
 					required: true,
-					errorMessage: '手机号不能为空'
+					errorMessage: '手机号不能为空!'
 				},
 				{
-					pattern: '^[a-zA-Z0-9]{6,8}',
-					errorMessage: '账号必须为6-8位数字字母组合'
+					pattern: '^[a-z0-9]{6,}',
+					errorMessage: '手机号格式不正确'
 				}
 			]
 		},
@@ -38,7 +40,16 @@
 	const onPhoneFormSubmit = async () => {
 		try {
 			const formDataToApi = await loginForm.value.validate()
-			console.log(formDataToApi)
+			const res = await loginApi(formDataToApi)
+			console.log(res)
+			// if (res.code === 200) {
+			// 	console.log('请求成功', res)
+			// 	const store = useUserInformation()
+			// 	store.setToken(res.data)
+			// 	uni.switchTab({
+			// 		url: '/pages/talk/talk'
+			// 	})
+			// }
 		} catch (err) {
 			console.log(err)
 		}

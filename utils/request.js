@@ -1,9 +1,9 @@
 import ajax from '@/uni_modules/u-ajax/'
-
+import { useUserInformation } from '../stores/user'
 const instance = ajax.create({
-	// 改
-	// baseURL: 'https://hmajax.itheima.net/'
-	baseURL: 'http://192.168.28.49:8099/'
+	// 改成项目地址
+	baseURL: 'https://slwl-api.itheima.net'
+	// baseURL: 'http://192.168.28.49:8099/'
 })
 
 // 1. 请求拦截器
@@ -15,7 +15,12 @@ instance.interceptors.request.use(
 			mask: true // 请求遮罩
 		})
 		// 2. 统一添加token（登录功能实现后添加）
-
+		const storeToken = useUserInformation().getToken()
+		console.log(storeToken)
+		if (storeToken) {
+			config.header.Authorization = storeToken
+		}
+		// 请求发出前处理些什么
 		return config
 	},
 	(error) => {

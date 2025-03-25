@@ -5,30 +5,37 @@ export const useUserInformation = defineStore(
 	'userInfo',
 	() => {
 		// 1. 状态数据（vuex State）
-		const count = ref(1)
+		// 1.1 用户token
+		const userLoginToken = ref('')
 		// 2.  定义方法（vuex Function）
-		function increment() {
-			count.value++
+		// function increment() {
+		// 	count.value++
+		// }
+		function setToken(_token) {
+			userLoginToken.value = _token
 		}
-		function decrement() {
-			count.value--
+		// 可能用到的getToken限制
+		function getToken() {
+			return userLoginToken.value
 		}
+
 		// 3. 定义异步方法（vuex action)
-		const asyncIncrement = () => {
-			setTimeout(() => {
-				count.value = 0
-			}, 200)
-		}
-		// 4. 一定要return
-		return { count, increment, decrement, asyncIncrement }
+		// const asyncIncrement = () => {
+		// 	setTimeout(() => {
+		// 		count.value = 0
+		// 	}, 200)
+		// }
+		// 4. 一定要return ？？别把token直接丢出去
+		return { setToken, getToken }
 	},
 	// 第三个参数配置决定持久化
 	// { unistorage: true }
 	{
-		unistorage: {
-			// 自定义存储
-			key: 'userTTT',
-			paths: ['count']
-		}
+		// unistorage: {
+		// 	// 自定义存储
+		// 	key: 'userTTT',
+		// 	paths: ['count']
+		// }
+		unistorage: true // 持久化
 	}
 )

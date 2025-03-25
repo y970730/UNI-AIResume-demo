@@ -1,9 +1,11 @@
 <script setup>
 	import { ref } from 'vue'
+	import { loginApi } from '@/apis/login'
+	import { useUserInformation } from '@/stores/user.js'
 	// 1. set form data
 	const loginFormData = ref({
-		account: '',
-		password: ''
+		account: 'mrwhite',
+		password: '123123'
 	})
 	// 2. account rules
 	const loginFormRules = ref({
@@ -37,7 +39,17 @@
 	const onFormSubmit = async () => {
 		try {
 			const formDataToApi = await loginForm.value.validate()
-			console.log(formDataToApi)
+			const res = await loginApi(formDataToApi)
+			if (res.code === 200) {
+				const store = useUserInformation()
+				// console.log('请求成功，返回结果：', res, store.setToken)
+				store.setToken(res.data)
+				uni.switchTab({
+					url: '/pages/talk/talk'
+				})
+				console.log('请求成功', res, store.getToken())
+				uni.utils.toast('登录成功！')
+			}
 		} catch (err) {
 			console.log('校验失败', err)
 		}
