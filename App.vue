@@ -16,8 +16,12 @@
 <!-- app.vue中不能写template！！只能有script 和 style！！ -->
 <style lang="scss">
 	/*每个页面公共css，即全局css全部写在这里 */
+	/**
+	 * 1. fonts.scss是一个字体文件
+	 * 2. uni-custom-app.scss 是一个局部修改uni-ui的样式文件
+	 */
 	@import './fonts.scss';
-
+	@import 'styles/uni-costom-app.scss';
 	/* 暂时不知道什么作用 */
 	button::after {
 		display: none;

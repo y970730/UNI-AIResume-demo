@@ -43,16 +43,14 @@
 		// 颜色名只支持 H5，wx只能十六进制，去看wx小程序文档
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#ffffff",
 		"backgroundColor": "#F8F8F8"
 	},
 	"tabBar": {
-		"color": "black", // 未选中时文字颜色
+		"color": "#bfbfbf", // 未选中时文字颜色
 		"selectedColor": "#78c5c0", // 选中时文字颜色 $uni-color-primary: #78c5c0
-		// #ifndef VUE3
-		"backgroundColor": "#ffa500", // 背景颜色
-		// #endif
-		"borderStyle": "black", // 顶部边框颜色
+		"backgroundColor": "#fff", // 背景颜色
+		"borderStyle": "white", // 顶部边框颜色
 		"fontSize": "10px",
 		// list is necessary in tabbar 
 		"list": [{
@@ -60,7 +58,9 @@
 				// text can be any words you want
 				"text": "对话",
 				"iconPath": "static/Talk.png",
-				"selectedIconPath": "static/Talk-Checked.png"
+				"selectedIconPath": "static/Talk-Checked.png",
+				"iconWidth": "80rpx", // 调整图标宽度
+				"iconHeight": "80rpx" // 调整图标高度
 			},
 			{
 				"pagePath": "pages/folder/folder",

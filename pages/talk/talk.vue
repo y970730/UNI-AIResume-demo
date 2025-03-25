@@ -7,6 +7,11 @@
 			title: 'Talk页面'
 		})
 	})
+	const goLogin = () => {
+		uni.navigateTo({
+			url: '/pages/login/login'
+		})
+	}
 </script>
 <template>
 	<view class="content">
@@ -14,6 +19,7 @@
 		<view class="text-area">
 			<text class="title">{{ test }}</text>
 		</view>
+		<button type="default" @click="goLogin">去登录</button>
 	</view>
 </template>
 

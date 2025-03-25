@@ -29,16 +29,18 @@
 </script>
 
 <template>
-	<view class="user-login">
-		<view class="login-type">
-			<view class="title">{{ tabMeta.title }}</view>
-			<view class="type" @click="changeLoginType">
-				<text>{{ tabMeta.subTitle }}</text>
-				<text class="iconfont icon-icon-line-right"></text>
+	<view class="page-container">
+		<view class="user-login">
+			<view class="login-type">
+				<view class="title">{{ tabMeta.title }}</view>
+				<view class="type" @click="changeLoginType">
+					<text>{{ tabMeta.subTitle }}</text>
+					<text class="iconfont icon-icon-line-right"></text>
+				</view>
 			</view>
+			<arAccount v-if="tabIndex === 0"></arAccount>
+			<arMobile v-else></arMobile>
 		</view>
-		<arAccount v-if="tabIndex === 0"></arAccount>
-		<arMobile v-else></arMobile>
 	</view>
 </template>
 
