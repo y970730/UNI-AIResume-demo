@@ -20,14 +20,6 @@
 		// 		uni.utils.toast()
 		// 	})
 		// OpenAi Assistant message reque sts test
-		// let data = JSON.stringify({
-		// 	content: '你好123',
-		// 	userId: 123
-		// })
-		// request.post(
-		// 	'http://192.168.28.49:8099/internal/ai-chat/send/message',
-		// 	data
-		// )
 	})
 	// 2.2 获取 store
 	onShow(() => {

@@ -92,6 +92,9 @@
 				登录
 			</button>
 		</uni-forms>
+		<view class="registration">
+			<text @click="">新用户注册</text>
+		</view>
 	</view>
 </template>
 

@@ -95,6 +95,7 @@
 				登录
 			</button>
 		</uni-forms>
+		<view class="registration">新用户注册</view>
 	</view>
 </template>
 

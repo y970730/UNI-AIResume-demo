@@ -6,7 +6,7 @@ export const useUserInformation = defineStore(
 	() => {
 		// 1. 状态数据（vuex State）
 		// 1.1 用户token
-		const userLoginToken = ref('')
+		const userLoginToken = ref('f6aeaec8-1383-4fca-98b8-d189a62bab4a')
 		// 2.  定义方法（vuex Function）
 		// function increment() {
 		// 	count.value++

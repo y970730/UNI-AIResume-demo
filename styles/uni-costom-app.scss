@@ -67,4 +67,16 @@
 		background-color: #fadcd9;
 		color: #fff;
 	}
+	.registration {
+		margin-top: 40rpx;
+		position: relative;
+		text {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			color: $uni-primary;
+			border-bottom: 2rpx solid $uni-primary;
+		}
+	}
 }
