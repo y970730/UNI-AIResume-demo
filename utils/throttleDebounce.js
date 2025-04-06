@@ -4,7 +4,7 @@
  * @param {Number} delay 节流时间
  * @returns {Function}
  */
-export function throttle(fn, delay = 3000) {
+export function throttle(fn, delay = 300) {
 	let lastTime = 0
 	return function (...args) {
 		const now = Date.now()
