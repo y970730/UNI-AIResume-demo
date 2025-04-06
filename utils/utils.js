@@ -9,6 +9,7 @@ export const utils = {
 	 * @param {string} icon 提示图标类型
 	 */
 	toast(title = '数据加载失败', icon = 'none') {
+		console.log(title, icon)
 		uni.showToast({
 			title,
 			icon,

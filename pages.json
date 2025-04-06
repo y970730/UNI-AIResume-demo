@@ -15,18 +15,18 @@
 			"path": "pages/talk/talk",
 			// 对应页面的局部配置，会覆盖下面的globalStyle
 			"style": {
-				"navigationBarTitleText": "page1"
+				"navigationBarTitleText": "Assistant"
 			}
 		},
 		{
 			"path": "pages/folder/folder",
 			"style": {
-				"navigationBarTitleText": "page2"
+				"navigationBarTitleText": "文件"
 			}
 		}, {
 			"path": "pages/person/person",
 			"style": {
-				"navigationBarTitleText": "page3"
+				"navigationBarTitleText": "我的信息"
 				// "enablePullDownRefresh": false
 			}
 
