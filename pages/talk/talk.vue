@@ -4,7 +4,7 @@
 	import { throttle } from '@/utils/throttleDebounce.js'
 	const input = ref('')
 	const messages = ref([
-		{ role: 'user', content: '你好AI～1' },
+		{ role: 'user', content: '你好AI～' },
 		{ role: 'assistant', content: '你好，亲爱的白痴。' },
 		{ role: 'user', content: '你好AI～2' },
 		{ role: 'assistant', content: '你好，亲爱的白痴。' },
@@ -21,10 +21,7 @@
 		{ role: 'user', content: '你好AI～8' },
 		{ role: 'assistant', content: '你好，亲爱的白痴。' }
 	])
-	// const messages = ref([
-	// 	{ role: 'user', content: '你好AI～' },
-	// 	{ role: 'assistant', content: '你好，亲爱的白痴。' }
-	// ])
+	// const messages = ref([])
 	// 输入框是否可用
 	let isAvailable = ref(true)
 	let conversationId = ref(0)
@@ -46,6 +43,7 @@
 		}
 		// 发送请求
 		messages.value.push(aiMsg)
+		toTop()
 		try {
 			const res = await sendMessageApi(
 				JSON.stringify({
@@ -61,16 +59,16 @@
 				await new Promise((resolve) => setTimeout(resolve, 50))
 				aiMsg.content += char
 				scrollFlag.value++
-				if (scrollFlag.value % 15 == 0 || scrollFlag.value == 1) {
+				if (scrollFlag.value % 5 == 0 || scrollFlag.value == 1) {
 					console.log('进入if', scrollFlag.value)
-					// await nextTick()
-					// scrollToBottom()
+					toTop()
 				}
 				messages.value = [...messages.value]
 			}
 		} catch (err) {
 			isAvailable.value = true
 			aiMsg.content = '请求出错'
+			toTop()
 			// await nextTick()
 			// scrollToBottom()
 		}
@@ -88,6 +86,7 @@
 		// 		windowHeight.value = data.height
 		// 	})
 		// 	.exec()
+		toTop()
 		try {
 			const res = await sendMessageApi(
 				JSON.stringify({
@@ -108,10 +107,10 @@
 				await new Promise((resolve) => setTimeout(resolve, 30))
 				scrollFlag.value++
 				aiMsg.content += char
-				// if (scrollFlag.value % 5 == 0) {
-				// 	await nextTick()
-				// 	// scrollToBottom()
-				// }
+				if (scrollFlag.value % 5 == 0) {
+					await nextTick()
+					toTop()
+				}
 
 				messages.value = [...messages.value]
 			}
@@ -132,8 +131,6 @@
 				content: ''
 			}
 			messages.value.push(aiMsg)
-			// await nextTick()
-			// scrollToBottom()
 			let scrollFlag = ref(0)
 			const fakeStreamText =
 				'服务有点问题，建议压力后端。但你仍然可以尝试询问我哦'
@@ -143,7 +140,7 @@
 				scrollFlag.value++
 				if (scrollFlag.value % 5 == 0) {
 					await nextTick()
-					// scrollToBottom()
+					toTop()
 				}
 
 				messages.value = [...messages.value]
@@ -286,18 +283,33 @@
 	// 		old2.value.scrollTop
 	// 	)
 	// }
+	let scrollTop = ref(0)
+	let old = ref({
+		scrollTop: 0
+	})
+	function scroll(e) {
+		console.log(e)
+		old.value.scrollTop = e.detail.scrollTop
+		console.log('old.value.scrollTop', old.value.scrollTop)
+	}
+	function toTop() {
+		// scrollTop.value = old.value.scrollTop
+		scrollTop.value = old.value.scrollTop
+		console.log(scrollTop.value)
+		nextTick(function () {
+			scrollTop.value = 0
+		})
+	}
 </script>
 <template>
 	<view class="chat-container">
 		<scroll-view
 			class="chat-messages"
-			scroll-y
-			enable-flex="true"
+			scroll-y="true"
 			scroll-with-animation="true"
+			:scroll-top="scrollTop"
+			@scroll="scroll"
 		>
-			<!-- :scroll-top="scrollTop" -->
-			<!-- @scroll="scroll" -->
-			<!-- :scroll-into-view="scrollIntoView" -->
 			<view class="message-wrapper">
 				<view
 					v-for="(msg, index) in messages"
@@ -309,9 +321,13 @@
 						{{ msg.content }}
 					</view>
 				</view>
+				<view
+					class="test"
+					style="height: 1rpx"
+				></view>
 			</view>
 		</scroll-view>
-		<!-- <view class="newMes">
+		<!-- <view class="newMes">    
 			<view
 				class="newMesInfo"
 				v-show="haveNewMsg"
@@ -319,6 +335,7 @@
 				👇New👇
 			</view>
 		</view> -->
+
 		<view class="input-owner">
 			<view class="input-area">
 				<input
@@ -337,15 +354,12 @@
 					@confirm="handleSendWithThrottle"
 					confirm-type="send"
 				/>
-				<!-- confirm-type="send"
-			 -->
 				<button
 					class="send-button"
 					@click="handleSendWithThrottle"
 				>
 					发送
 				</button>
-				<button @click="changeNewMsgInfo">测试</button>
 			</view>
 			<view class="notice">
 				<text>对话由AI提供，请理性使用嗷</text>
@@ -369,18 +383,10 @@
 			flex: 1;
 			overflow-y: auto;
 			box-sizing: border-box;
-			height: auto;
-			// down测试down
-			display: flex;
-			flex-direction: column-reverse;
-			// justify-content: flex-end;
-			// up测试up
-			// margin: 16rpx;
+			transform: rotate(180deg);
 			.message-wrapper {
-				// 	display: flex;
-				// 	// height: auto;
-				// 	flex-direction: column;
-				// 	justify-content: flex-end;
+				width: 100vw;
+				transform: rotate(-180deg);
 				.message {
 					display: flex;
 					flex-direction: column;
