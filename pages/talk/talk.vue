@@ -3,17 +3,17 @@
 	import { sendMessageApi } from '@/apis/sendMessage.js'
 	import { throttle } from '@/utils/throttleDebounce.js'
 	const input = ref('')
-	const messages = ref([
-		{ role: 'user', content: '你好AI' },
-		{ role: 'assistant', content: '你好白痴' },
-		{ role: 'user', content: '你好AI' },
-		{ role: 'assistant', content: '你好白痴' },
-		{ role: 'user', content: '你好AI' },
-		{ role: 'assistant', content: '你好白痴' },
-		{ role: 'user', content: '你好AI' },
-		{ role: 'assistant', content: '你好白痴' }
-	])
-	// const messages = ref([])
+	// const messages = ref([
+	// 	{ role: 'user', content: '你好AI' },
+	// 	{ role: 'assistant', content: '你好白痴' },
+	// 	{ role: 'user', content: '你好AI' },
+	// 	{ role: 'assistant', content: '你好白痴' },
+	// 	{ role: 'user', content: '你好AI' },
+	// 	{ role: 'assistant', content: '你好白痴' },
+	// 	{ role: 'user', content: '你好AI' },
+	// 	{ role: 'assistant', content: '你好白痴' }
+	// ])
+	const messages = ref([])
 	const scrollIntoView = ref('')
 	// 输入框是否可用
 	let isAvailable = ref(true)
@@ -235,7 +235,7 @@
 				>
 					发送
 				</button>
-				<button @click="scrollToBottom">测试</button>
+				<!-- <button @click="scrollToBottom">测试</button> -->
 			</view>
 			<view class="notice">
 				<text>对话由AI提供，请理性使用嗷</text>
@@ -247,9 +247,10 @@
 	.chat-container {
 		display: flex;
 		flex-direction: column;
-		// justify-content: space-between;
-		// height: 100%;
+		position: fixed;
+		// height: calc(100vh - 100rpx);
 		/* #ifdef MP-WEIXIN */
+		width: 100vw;
 		height: 100vh;
 		/* #endif */
 		background-color: #f5f7f6;
@@ -263,8 +264,8 @@
 				display: flex;
 				flex-direction: column;
 				.bubble {
-					margin: 16rpx;
-					padding: 16rpx;
+					margin: 36rpx;
+					padding: 18rpx;
 					// background-color: $uni-primary;
 					border-radius: 16rpx;
 					max-width: 80%;
@@ -272,59 +273,61 @@
 					word-break: break-word;
 				}
 				.user {
-					margin-right: 24rpx;
+					// margin-right: 24rpx;
 					align-self: flex-end;
 					color: #333333;
 					background-color: $uni-primary;
 				}
 				.assistant {
-					margin-left: 24rpx;
+					// margin-left: 24rpx;
 					align-self: flex-start;
 					color: #555;
 					background-color: #dcebe9;
 				}
 			}
 		}
-
-		.input-area {
-			display: flex;
-			align-self: center;
-			width: 100%;
-			background-color: $uni-primary;
-			border: 2rpx solid #ccc;
-			border-bottom: none;
-			border-radius: 16rpx 16rpx 0 0;
-			min-height: 80rpx;
-			// padding: 0 24rpx;
-			.chat-input {
-				flex: 1;
-				font-size: 30rpx;
-				color: #333333;
-				border-radius: 16rpx;
-				padding: 6rpx;
-				margin: 16rpx;
-				margin-bottom: 0rpx;
-				border: 2rpx solid #ccc;
-			}
-			.send-button {
+		.input-owner {
+			.input-area {
+				display: flex;
 				align-self: center;
+				width: 100%;
 				background-color: $uni-primary;
-				color: #f9f9f9;
-				text-shadow: 3rpx 3rpx 5rpx rgba(0, 0, 0, 0.3);
-				padding: 0 24rpx;
-				border-radius: 8rpx;
+				// border: 2rpx solid #ccc;
+				border-bottom: none;
+				border-radius: 16rpx 16rpx 0 0;
+				box-sizing: border-box;
+				min-height: 80rpx;
+				// padding: 0 24rpx;
+				.chat-input {
+					flex: 1;
+					font-size: 30rpx;
+					color: #333333;
+					border-radius: 16rpx;
+					padding: 6rpx;
+					margin: 16rpx;
+					margin-bottom: 0rpx;
+					// border: 2rpx solid #ccc;
+				}
+				.send-button {
+					align-self: center;
+					background-color: $uni-primary;
+					color: #f9f9f9;
+					text-shadow: 3rpx 3rpx 5rpx rgba(0, 0, 0, 0.3);
+					padding: 0 24rpx;
+					border-radius: 8rpx;
+				}
 			}
-		}
-		.notice {
-			width: 100%;
-			color: #5f8f8c;
-			text-align: center;
-			box-sizing: border-box;
-			padding: 8rpx;
-			font-size: 18rpx;
-			background-color: $uni-primary;
-			align-self: center;
-			text-shadow: 3rpx 3rpx 5rpx rgba(0, 0, 0, 0.1);
+			.notice {
+				width: 100%;
+				color: #5f8f8c;
+				text-align: center;
+				box-sizing: border-box;
+				padding: 8rpx;
+				font-size: 18rpx;
+				background-color: $uni-primary;
+				align-self: center;
+				text-shadow: 3rpx 3rpx 5rpx rgba(0, 0, 0, 0.1);
+			}
 		}
 	}
 </style>
