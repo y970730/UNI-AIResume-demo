@@ -7,36 +7,49 @@
 			"name": "登录",
 			"path": "pages/login/login",
 			"query": ""
+		}, {
+			"name": "AI功能列表",
+			"path": "pages/assistantList/assistantList",
+			"query": ""
+		}, {
+			"name": "对话页面",
+			"path": "pages/talk/talk",
+			"query": ""
 		}]
 	},
 	// 注意，任何新页面必须在pages项里进行注册
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/talk/talk",
+			"path": "pages/conversationHistory/conversationHistory",
 			// 对应页面的局部配置，会覆盖下面的globalStyle
 			"style": {
-				"navigationBarTitleText": "Assistant"
+				"navigationBarTitleText": "历史对话"
 			}
 		},
 		{
-			"path": "pages/folder/folder",
+			"path": "pages/assistantList/assistantList",
 			"style": {
-				"navigationBarTitleText": "文件"
+				"navigationBarTitleText": "AI助理列表"
 			}
 		}, {
 			"path": "pages/person/person",
 			"style": {
-				"navigationBarTitleText": "我的信息"
+				"navigationBarTitleText": "个人信息"
 				// "enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": ""
+				// "enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/talk/talk",
+			"style": {
+				"navigationBarTitleText": ""
+			}
 		}
 	],
 	"globalStyle": {
@@ -54,23 +67,23 @@
 		"fontSize": "10px",
 		// list is necessary in tabbar 
 		"list": [{
-				"pagePath": "pages/talk/talk",
+				"pagePath": "pages/conversationHistory/conversationHistory",
 				// text can be any words you want
-				"text": "对话",
+				"text": "历史对话",
 				"iconPath": "static/Talk.png",
-				"selectedIconPath": "static/Talk-Checked.png",
-				"iconWidth": "80rpx", // 调整图标宽度
-				"iconHeight": "80rpx" // 调整图标高度
+				"selectedIconPath": "static/Talk-Checked.png"
+				// "iconWidth": "80rpx", // 调整图标宽度
+				// "iconHeight": "80rpx" // 调整图标高度
 			},
 			{
-				"pagePath": "pages/folder/folder",
-				"text": "文件",
+				"pagePath": "pages/assistantList/assistantList",
+				"text": "AI功能列表",
 				"iconPath": "static/Folder.png",
 				"selectedIconPath": "static/Folder-Checked.png"
 			},
 			{
 				"pagePath": "pages/person/person",
-				"text": "我的",
+				"text": "个人信息",
 				"iconPath": "static/Person.png",
 				"selectedIconPath": "static/Person-Checked.png"
 			}

@@ -45,14 +45,17 @@ instance.interceptors.response.use(
 		// 1. 处理返回数据剥离出data
 		if (response.data.code !== 200) {
 			// 请求成功但是服务端报错
+			console.log('进入响应拦截，业务状态码显示出错')
 			uni.utils.toast(response.data.msg)
 		}
+		// 2. 处理token失效401
+		// if (response.data.code == 403) {
+		// }
 		return response.data
 	},
 	(error) => {
 		uni.hideLoading()
-		// 1. 处理token失效401
-		uni.utils.toast('服务请求错误')
+		uni.utils.toast('服务请求错误，请检查网络')
 		console.log('响应拦截器发现出错啦！', error)
 		return Promise.reject(error)
 	}
