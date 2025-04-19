@@ -14,7 +14,10 @@
 		// 跳转过去
 		// console.log(item)
 		uni.navigateTo({
-			url: `/subpkg/talk/talk?agentId=${item.id}&aiIcon=${item.icon}`,
+			// url: `/subpkg/talk/talk?agentId=${item.id}&aiIcon=${item.icon}`,
+			url: `/subpkg/talk/talk?agentId=${item.id}&aiIcon=${encodeURIComponent(
+				item.icon
+			)}`,
 			success: (res) => {
 				console.log('跳转成功')
 			},

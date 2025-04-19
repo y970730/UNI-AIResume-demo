@@ -45,15 +45,16 @@
 		// 发送请求
 		messages.value.push(aiMsg)
 		toTop()
-		console.log('conversationId:', conversationId)
-		const res = await sendMessageApi(
-			JSON.stringify({
-				content: trimmed,
-				...(conversationId !== 0 && { conversationId }),
-				...(agentId !== 0 && { agentId })
-			})
-		)
-		console.log('头像出问题了', res)
+		// console.log('发送前看看conversationId:', conversationId)
+		const _sendData = {
+			content: trimmed,
+			...(conversationId !== 0 && { conversationId }),
+			...(agentId !== 0 && { agentId })
+		}
+		console.log('发送消息的参数：', _sendData)
+		const res = await sendMessageApi(JSON.stringify(_sendData))
+		conversationId = res.data.conversationId
+		// console.log('看看res找到conversationId', res)
 		isAvailable.value = true
 		if (res.data.eventVo.length !== 0) {
 			// uni.$emit('passEventVo', res.data.eventVo)
@@ -90,18 +91,19 @@
 	 * 生命周期区域
 	 */
 	onLoad(async (opt) => {
-		// console.log('看看resumeData', useResumeData)
-		// console.log('onload触发', 'opt为', opt)
+		// console.log('看看opt', opt)
+		// console.log('看看头像链接', opt.aiIcon)
+		// console.log('看看agentId', opt.agentId)
+		// console.log('看看conversationId', opt.conversationId)
+		/**
+		 * 1. conversationId只有聊天历史页面点击进入会传。这个页面并不提供agentId和aiIcon，
+		 * 		直接通过历史消息解析头像，且服务端不要求有 conversationId 情况下提供agentId
+		 */
 		conversationId = opt?.conversationId ? +opt.conversationId : 0
 		agentId = opt?.agentId ? +opt.agentId : 0
-		aiIcon = opt?.aiIcon ? opt.aiIcon : '/static/default-ai-avatar.jpg'
-		// console.log(
-		// 	'onload触发',
-		// 	'conversationId为',
-		// 	conversationId,
-		// 	'agentId为:',
-		// 	agentId
-		// )
+		aiIcon = opt?.aiIcon
+			? decodeURIComponent(opt.aiIcon)
+			: '/static/default-ai-avatar.jpg'
 	})
 	onMounted(async () => {
 		isAvailable.value = false
@@ -109,6 +111,7 @@
 
 		// try {
 		// 先判断是否为回显情况，如果是就先渲染列表
+		console.log('是否有conversationId？', conversationId)
 		if (conversationId) {
 			// console.log('要显示历史消息')
 			const _data = {
@@ -119,16 +122,19 @@
 				current: false
 			}
 			const res = await getConversationContentApi(JSON.stringify(_data))
-			// console.log('聊天消息', res.data.data)
+			console.log('聊天消息', res.data.data)
 			let oldMessages = res.data.data
-			// console.log('oldMessages', oldMessages)
+			console.log('oldMessages', oldMessages)
 			oldMessages = oldMessages.filter((msg) => {
 				// console.log(msg)
 				return (
 					msg.content !== 'msgFirst' && msg.content !== 'msgBackFromHistory'
 				)
 			})
-			messages.value = oldMessages
+			// 临时颠倒数组顺序
+			messages.value = oldMessages.reverse()
+			// 颠倒顺序为【1]，正常情况是【0]
+			aiIcon = messages.value[1].senderIcon
 			console.log('messages.value', messages.value)
 		}
 		isAvailable.value = true
@@ -138,11 +144,11 @@
 	let old = ref({
 		scrollTop: 0
 	})
-	function scroll(e) {
-		console.log(e)
-		old.value.scrollTop = e.detail.scrollTop
-		console.log('old.value.scrollTop', old.value.scrollTop)
-	}
+	// function scroll(e) {
+	// 	console.log(e)
+	// 	old.value.scrollTop = e.detail.scrollTop
+	// 	console.log('old.value.scrollTop', old.value.scrollTop)
+	// }
 	function toTop() {
 		// scrollTop.value = old.value.scrollTop
 		scrollTop.value = old.value.scrollTop
@@ -151,6 +157,7 @@
 			scrollTop.value = 0
 		})
 	}
+	const mdvalue = '### uniapp markdwon'
 </script>
 <template>
 	<view class="chat-container">
@@ -159,7 +166,6 @@
 			:scroll-y="true"
 			:scroll-with-animation="true"
 			:scroll-top="scrollTop"
-			@scroll="scroll"
 		>
 			<view class="message-wrapper">
 				<view
@@ -174,9 +180,10 @@
 							v-if="msg.senderRole == 'ai'"
 							:src="msg.senderIcon || '/static/default-ai-avatar.jpg'"
 						/>
-						<view :class="['bubble', msg.senderRole]">
-							{{ msg.content }}
-						</view>
+						<ua-markdown
+							:class="['bubble', msg.senderRole]"
+							:source="msg.content"
+						/>
 						<image
 							class="assistantPic"
 							v-if="msg.senderRole == 'user'"
