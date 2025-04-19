@@ -109,7 +109,6 @@
 	onMounted(async () => {
 		isAvailable.value = false
 		toTop()
-
 		// try {
 		// 先判断是否为回显情况，如果是就先渲染列表
 		console.log('是否有conversationId？', conversationId)
@@ -146,25 +145,25 @@
 		scrollTop: 0
 	})
 	function scroll(e) {
-		console.log(e)
+		// console.log(e)
 		old.value.scrollTop = e.detail.scrollTop
-		console.log('old.value.scrollTop', old.value.scrollTop)
+		// console.log('old.value.scrollTop', old.value.scrollTop)
 	}
 	function toTop() {
 		// scrollTop.value = old.value.scrollTop
 		scrollTop.value = old.value.scrollTop
-		console.log(scrollTop.value)
+		// console.log(scrollTop.value)
 		nextTick(function () {
 			scrollTop.value = 0
 		})
 	}
-	const mdvalue = '### uniapp markdwon'
+	// const mdvalue = '### uniapp markdwon'
 </script>
 <template>
 	<view class="chat-container">
 		<scroll-view
 			class="chat-messages"
-			:scroll-y="true"
+			scroll-y="true"
 			:scroll-with-animation="true"
 			:scroll-top="scrollTop"
 			@scroll="scroll"
