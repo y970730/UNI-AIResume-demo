@@ -2,7 +2,7 @@
 	import { onLoad } from '@dcloudio/uni-app'
 	import { ref, nextTick, onMounted } from 'vue'
 	import { sendMessageApi } from '@/apis/sendMessage.js'
-	import { throttle } from '@/subpkg/utils/throttleDebounce.js'
+	import { throttle } from '/subpkg/utils/throttleDebounce.js'
 	import { getConversationContentApi } from '@/apis/getConversationContent.js'
 	import { useResumeData } from '@/stores/resumeData.js'
 
@@ -45,6 +45,7 @@
 		// 发送请求
 		messages.value.push(aiMsg)
 		toTop()
+		console.log('conversationId:', conversationId)
 		const res = await sendMessageApi(
 			JSON.stringify({
 				content: trimmed,
