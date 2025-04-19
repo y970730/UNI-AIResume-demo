@@ -35,6 +35,7 @@
 			...(agentId !== 0 && { agentId })
 		})
 		input.value = ''
+		toTop()
 		isAvailable.value = false
 		// 添加AI消息占位符
 		const aiMsg = {
@@ -144,11 +145,11 @@
 	let old = ref({
 		scrollTop: 0
 	})
-	// function scroll(e) {
-	// 	console.log(e)
-	// 	old.value.scrollTop = e.detail.scrollTop
-	// 	console.log('old.value.scrollTop', old.value.scrollTop)
-	// }
+	function scroll(e) {
+		console.log(e)
+		old.value.scrollTop = e.detail.scrollTop
+		console.log('old.value.scrollTop', old.value.scrollTop)
+	}
 	function toTop() {
 		// scrollTop.value = old.value.scrollTop
 		scrollTop.value = old.value.scrollTop
@@ -166,6 +167,7 @@
 			:scroll-y="true"
 			:scroll-with-animation="true"
 			:scroll-top="scrollTop"
+			@scroll="scroll"
 		>
 			<view class="message-wrapper">
 				<view
