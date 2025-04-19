@@ -27,7 +27,6 @@ instance.interceptors.request.use(
 		// 2. 统一添加token（登录功能实现后添加）
 		const storeToken = useUserInformation().getToken()
 		// console.log('request的config', config.url)
-		// console.log(storeToken)
 		if (storeToken) {
 			config.header.token = storeToken
 		}

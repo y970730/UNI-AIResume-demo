@@ -3,19 +3,39 @@
 	import { ref, nextTick, onMounted } from 'vue'
 	import { getAssistantListApi } from '@/apis/getAssList.js'
 	const assList = ref([])
-	// 函数区
-	function goTalk(event) {
-		console.log('点击', event)
+	/**
+	 * 函数区
+	 */
+
+	async function goTalk(item) {
+		// const data = { conversationId: item.id, page: 0, size: 10, desc: true }
+		// const res = await getConversationContentApi(data)
+		// console.log(item, res, data)
+		// 跳转过去
+		console.log(item)
+		uni.navigateTo({
+			url: `/pages/talk/talk?agentId=${item.id}`,
+			success: (res) => {
+				console.log('跳转成功')
+			},
+			fail: (err) => {
+				console.log('跳转失败')
+			}
+		})
 	}
 
+	/**
+	 * 生命周期区域
+	 */
 	onMounted(async () => {
 		const res = await getAssistantListApi()
 		assList.value = res.data.data
+		console.log('agent列表', res)
 	})
-	// onShow(() => {
-	// 	uni.showToast({
-	// 		title: 'Ass-List页面'
-	// 	})
+	// onShow(async () => {
+	// 	const res = await getAssistantListApi()
+	// 	assList.value = res.data.data
+	// 	console.log('agent列表', res)
 	// })
 </script>
 <template>

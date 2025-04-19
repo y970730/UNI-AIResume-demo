@@ -15,6 +15,10 @@
 			"name": "对话页面",
 			"path": "pages/talk/talk",
 			"query": ""
+		}, {
+			"name": "简历页面",
+			"path": "pages/resume/resume",
+			"query": ""
 		}]
 	},
 	// 注意，任何新页面必须在pages项里进行注册
@@ -47,6 +51,12 @@
 
 		}, {
 			"path": "pages/talk/talk",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/resume/resume",
 			"style": {
 				"navigationBarTitleText": ""
 			}

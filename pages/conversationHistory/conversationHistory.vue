@@ -1,5 +1,5 @@
 <script setup>
-	import { onLoad, onShow } from '@dcloudio/uni-app'
+	import { onShow } from '@dcloudio/uni-app'
 	import { ref, nextTick, onMounted } from 'vue'
 	// 导入 request 模块
 	import { getConversationListApi } from '@/apis/getConversationList.js'
@@ -34,9 +34,14 @@
 	// 	// 	a: 1
 	// 	// })
 	// })
-	function goConversation() {
+	// 对话点击跳转聊天
+	async function handleChatClick(item) {
+		// const data = { conversationId: item.id, page: 0, size: 10, desc: true }
+		// const res = await getConversationContentApi(data)
+		// console.log(item)
+		// 跳转过去
 		uni.navigateTo({
-			url: '/pages/talk/talk',
+			url: `/pages/talk/talk?conversationId=${item.id}`,
 			success: (res) => {
 				console.log('跳转成功')
 			},
@@ -45,12 +50,11 @@
 			}
 		})
 	}
-	onMounted(async () => {
+	// 请求对话历史函数，包含日期格式化逻辑
+	async function getConversationListANDformateDate() {
 		const res = await getConversationListApi()
 		chatList.value = res.data.data
-
-		const _now = +uni.utils.formatTime(undefined, 'YYYYMMDD')
-		console.log(res.data.data)
+		console.log('聊天历史列表', res.data.data)
 		// ↓↓↓日期计算函数模块↓↓↓ 格式化日期标签,计算相隔几天，超过前天显示日期
 		const getRelativeDayLabel = (relDay) => {
 			const _today = dayjs().startOf('day')
@@ -78,11 +82,16 @@
 			formattedTime: getRelativeDayLabel(item.lastMessageTime)
 		}))
 		// ↑↑↑遍历修改格式化时间️↑↑↑
+	}
+	onShow(() => {
+		getConversationListANDformateDate()
+	})
+	onMounted(() => {
+		getConversationListANDformateDate()
 	})
 </script>
 <template>
 	<view class="chat-container">
-		<button @click="goConversation">去往对话页</button>
 		<view class="ass-list">
 			<uni-list>
 				<uni-list-chat

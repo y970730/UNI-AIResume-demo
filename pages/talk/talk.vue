@@ -1,12 +1,23 @@
 <script setup>
-	import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue'
+	import { onLoad } from '@dcloudio/uni-app'
+	import { ref, nextTick, onMounted } from 'vue'
 	import { sendMessageApi } from '@/apis/sendMessage.js'
 	import { throttle } from '@/utils/throttleDebounce.js'
+	import { getConversationContentApi } from '@/apis/getConversationContent.js'
+	import { useResumeData } from '@/stores/resumeData.js'
+
 	const input = ref('')
 	const messages = ref([])
 	// 输入框是否可用
 	let isAvailable = ref(true)
-	let conversationId = ref(0)
+	// 会话ID用来请求聊天记录内容
+	let conversationId = 0
+	// agentId，用来点击agent新建对应的聊天
+	let agentId = 0
+	// const userStore = useResumeData()
+	// const tokenStore = useUserInformation()
+	// 如果从历史消息列表跳转则保存conversationId到这里
+	// let getCovData = ref({ conversationId:0,page: 0, size: 10, desc: true })
 	const handleSend = async () => {
 		const trimmed = input.value.trim()
 		if (!trimmed) {
@@ -16,102 +27,163 @@
 		// 处理用户信息发送
 		// 添加用户消息
 		messages.value.push({
-			role: 'user',
+			senderRole: 'user',
 			content: trimmed,
-			conversationId: 2597,
-			agentId: 1
+			...(conversationId !== 0 && { conversationId }),
+			...(agentId !== 0 && { agentId })
 		})
 		input.value = ''
 		isAvailable.value = false
 		// 添加AI消息占位符
 		const aiMsg = {
-			role: 'assistant',
+			senderRole: 'ai',
 			content: ''
 		}
 		// 发送请求
 		messages.value.push(aiMsg)
 		toTop()
-		// try {
 		const res = await sendMessageApi(
 			JSON.stringify({
 				content: trimmed,
-				conversationId: conversationId.value
+				...(conversationId !== 0 && { conversationId }),
+				...(agentId !== 0 && { agentId })
 			})
 		)
 		isAvailable.value = true
+		if (res.data.eventVo.length !== 0) {
+			// uni.$emit('passEventVo', res.data.eventVo)
+			console.log(res.data.eventVo)
+			useResumeData().setData(res.data.eventVo)
+			console.log('看看eventVo', res)
+			console.log('测试', useResumeData().getData())
+			uni.navigateTo({
+				url: `/pages/resume/resume`,
+				success: (res) => {
+					console.log('跳转成功')
+				},
+				fail: (err) => {
+					console.log('跳转失败')
+				}
+			})
+		}
 		// 流式输出
 		const fakeStreamText = res.data.completeContent
+		// console.log('发送消息部分返回的信息', res.data)
 		let scrollFlag = ref(0)
 		for (const char of fakeStreamText) {
 			await new Promise((resolve) => setTimeout(resolve, 50))
 			aiMsg.content += char
 			scrollFlag.value++
 			if (scrollFlag.value % 5 == 0 || scrollFlag.value == 1) {
-				console.log('进入if', scrollFlag.value)
+				// console.log("进入if", scrollFlag.value);
 				toTop()
 			}
 			messages.value = [...messages.value]
 		}
-		// } catch (err) {
-		// 	isAvailable.value = true
-		// 	aiMsg.content = '请求出错'
-		// 	toTop()
-		// }
 	}
+	/**
+	 * 生命周期区域
+	 */
+	onLoad(async (opt) => {
+		// console.log('看看resumeData', useResumeData)
+		// console.log('onload触发', 'opt为', opt)
+		conversationId = opt?.conversationId ? +opt.conversationId : 0
+		agentId = opt?.agentId ? +opt.agentId : 0
+		// console.log(
+		// 	'onload触发',
+		// 	'conversationId为',
+		// 	conversationId,
+		// 	'agentId为:',
+		// 	agentId
+		// )
+	})
 	onMounted(async () => {
 		isAvailable.value = false
 		toTop()
-		try {
-			const res = await sendMessageApi(
-				JSON.stringify({
-					content: '这是前端初始请求，只需要当做看不见返回一个打招呼',
-					conversationId: 2597,
-					agentId: 1
-				})
-			)
-			conversationId.value = res.data.conversationId
-			isAvailable.value = true
-			const aiMsg = {
-				role: 'assistant',
-				content: ''
-			}
-			messages.value.push(aiMsg)
-			const fakeStreamText = res.data.completeContent
-			let scrollFlag = ref(0)
-			for (const char of fakeStreamText) {
-				await new Promise((resolve) => setTimeout(resolve, 30))
-				scrollFlag.value++
-				aiMsg.content += char
-				if (scrollFlag.value % 5 == 0) {
-					await nextTick()
-					toTop()
-				}
 
-				messages.value = [...messages.value]
+		// try {
+		// 先判断是否为回显情况，如果是就先渲染列表
+		if (conversationId) {
+			// console.log('要显示历史消息')
+			const _data = {
+				conversationId,
+				page: 0,
+				size: 10,
+				desc: true,
+				current: false
 			}
-		} catch (err) {
-			console.log('进入了mount的catch', err)
-			isAvailable.value = true
-			const aiMsg = {
-				role: 'assistant',
-				content: ''
-			}
-			messages.value.push(aiMsg)
-			let scrollFlag = ref(0)
-			const fakeStreamText =
-				'服务有点问题，建议压力后端。但你仍然可以尝试询问我哦'
-			for (const char of fakeStreamText) {
-				await new Promise((resolve) => setTimeout(resolve, 30))
-				aiMsg.content += char
-				scrollFlag.value++
-				if (scrollFlag.value % 5 == 0) {
-					await nextTick()
-					toTop()
-				}
-
-				messages.value = [...messages.value]
-			}
+			const res = await getConversationContentApi(JSON.stringify(_data))
+			// console.log('聊天消息', res.data.data)
+			let oldMessages = res.data.data
+			// console.log('oldMessages', oldMessages)
+			oldMessages = oldMessages.filter((msg) => {
+				// console.log(msg)
+				return (
+					msg.content !== 'msgFirst' && msg.content !== 'msgBackFromHistory'
+				)
+			})
+			messages.value = oldMessages
+			console.log('messages.value', messages.value)
 		}
+		// 然后再发送返回消息的请求
+		// const msgFirst = 'msgFirst'
+		// const msgBackFromHistory = 'msgBackFromHistory'
+		// const _sendData = JSON.stringify({
+		// 	...((conversationId !== 0 && { content: msgBackFromHistory }) || {
+		// 		content: msgFirst
+		// 	}),
+		// 	...(conversationId !== 0 && { conversationId }),
+		// 	...(agentId !== 0 && { agentId })
+		// })
+		// const res = await sendMessageApi(_sendData)
+		// console.log(
+		// 	'初始请求成功',
+		// 	'conversationId为:',
+		// 	conversationId,
+		// 	'发送的参数为：',
+		// 	_sendData
+		// )
+		// conversationId = res.data.conversationId
+		isAvailable.value = true
+		// const aiMsg = {
+		// 	senderRole: 'ai',
+		// 	content: ''
+		// }
+		// messages.value.push(aiMsg)
+		// const fakeStreamText = res.data.completeContent
+		// let scrollFlag = ref(0)
+		// for (const char of fakeStreamText) {
+		// 	await new Promise((resolve) => setTimeout(resolve, 30))
+		// 	scrollFlag.value++
+		// 	aiMsg.content += char
+		// 	if (scrollFlag.value % 5 == 0) {
+		// 		await nextTick()
+		// 		toTop()
+		// 	}
+		// 	messages.value = [...messages.value]
+		// }
+		// } catch (err) {
+		// 	console.log('进入了mount的catch', err)
+		// 	isAvailable.value = true
+		// 	const aiMsg = {
+		// 		senderRole: 'ai',
+		// 		content: ''
+		// 	}
+		// 	messages.value.push(aiMsg)
+		// 	let scrollFlag = ref(0)
+		// 	const fakeStreamText = '出错了，但你仍然可以尝试询问我哦。'
+		// 	for (const char of fakeStreamText) {
+		// 		await new Promise((resolve) => setTimeout(resolve, 30))
+		// 		aiMsg.content += char
+		// 		scrollFlag.value++
+		// 		if (scrollFlag.value % 5 == 0) {
+		// 			await nextTick()
+		// 			toTop()
+		// 		}
+
+		// 		messages.value = [...messages.value]
+		// 	}
+		// }
 	})
 	const handleSendWithThrottle = throttle(handleSend)
 	let scrollTop = ref(0)
@@ -136,8 +208,8 @@
 	<view class="chat-container">
 		<scroll-view
 			class="chat-messages"
-			scroll-y="true"
-			scroll-with-animation="true"
+			:scroll-y="true"
+			:scroll-with-animation="true"
 			:scroll-top="scrollTop"
 			@scroll="scroll"
 		>
@@ -148,22 +220,20 @@
 					:id="'msg-' + index"
 					class="message"
 				>
-					<view :class="['test', msg.role]">
-						<view
+					<view :class="['test', msg.senderRole]">
+						<image
 							class="assistantPic"
-							v-if="msg.role == 'assistant'"
-						>
-							人机
-						</view>
-						<view :class="['bubble', msg.role]">
+							v-if="msg.senderRole == 'ai'"
+							:src="msg.senderIcon || '/static/default-ai-avatar.jpg'"
+						/>
+						<view :class="['bubble', msg.senderRole]">
 							{{ msg.content }}
 						</view>
-						<view
+						<image
 							class="assistantPic"
-							v-if="msg.role == 'user'"
-						>
-							用户
-						</view>
+							v-if="msg.senderRole == 'user'"
+							:src="msg.senderIcon || '/static/default-user-avatar.jpg'"
+						/>
 					</view>
 				</view>
 			</view>
@@ -215,19 +285,41 @@
 			overflow-y: auto;
 			box-sizing: border-box;
 			transform: rotate(180deg);
+			// 隐藏滚动条
+			/* 隐藏滚动条（兼容微信小程序） */
+			::-webkit-scrollbar {
+				width: 0;
+				height: 0;
+				display: none;
+			}
+			/* 防止 iOS 出现滚动条 */
+			-ms-overflow-style: none; /* IE 10+ */
+			scrollbar-width: none; /* Firefox */
 			.message-wrapper {
 				width: 100vw;
 				transform: rotate(-180deg);
 				.message {
 					display: flex;
+					padding: 0 20rpx;
 					flex-direction: column;
 					.test {
 						display: flex;
+						.assistantPic {
+							width: 80rpx;
+							height: 80rpx;
+							border-radius: 50%;
+							// background-color: red;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							font-size: 40rpx;
+							color: white;
+						}
 						.bubble {
 							margin: 18rpx;
 							padding: 18rpx;
 							border-radius: 16rpx;
-							max-width: 80%;
+							width: 80vw;
 							line-height: 1.75;
 							word-break: break-word;
 						}
@@ -237,7 +329,7 @@
 							color: #333333;
 							background-color: $uni-primary;
 						}
-						.assistant {
+						.ai {
 							// margin-left: 24rpx;
 							align-self: flex-start;
 							color: #555;
