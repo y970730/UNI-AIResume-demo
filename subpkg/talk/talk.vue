@@ -2,7 +2,7 @@
 	import { onLoad } from '@dcloudio/uni-app'
 	import { ref, nextTick, onMounted } from 'vue'
 	import { sendMessageApi } from '@/apis/sendMessage.js'
-	// import { throttle } from '@/utils/throttleDebounce.js'
+	import { throttle } from '@/subpkg/utils/throttleDebounce.js'
 	import { getConversationContentApi } from '@/apis/getConversationContent.js'
 	import { useResumeData } from '@/stores/resumeData.js'
 
@@ -14,6 +14,8 @@
 	let conversationId = 0
 	// agentId，用来点击agent新建对应的聊天
 	let agentId = 0
+	// AI头像
+	let aiIcon = '/static/default-ai-avatar.jpg'
 	// const userStore = useResumeData()
 	// const tokenStore = useUserInformation()
 	// 如果从历史消息列表跳转则保存conversationId到这里
@@ -37,7 +39,8 @@
 		// 添加AI消息占位符
 		const aiMsg = {
 			senderRole: 'ai',
-			content: ''
+			content: '',
+			senderIcon: aiIcon
 		}
 		// 发送请求
 		messages.value.push(aiMsg)
@@ -49,6 +52,7 @@
 				...(agentId !== 0 && { agentId })
 			})
 		)
+		console.log('头像出问题了', res)
 		isAvailable.value = true
 		if (res.data.eventVo.length !== 0) {
 			// uni.$emit('passEventVo', res.data.eventVo)
@@ -89,6 +93,7 @@
 		// console.log('onload触发', 'opt为', opt)
 		conversationId = opt?.conversationId ? +opt.conversationId : 0
 		agentId = opt?.agentId ? +opt.agentId : 0
+		aiIcon = opt?.aiIcon ? opt.aiIcon : '/static/default-ai-avatar.jpg'
 		// console.log(
 		// 	'onload触发',
 		// 	'conversationId为',

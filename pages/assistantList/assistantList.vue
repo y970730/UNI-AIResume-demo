@@ -12,9 +12,9 @@
 		// const res = await getConversationContentApi(data)
 		// console.log(item, res, data)
 		// 跳转过去
-		console.log(item)
+		// console.log(item)
 		uni.navigateTo({
-			url: `/subpck/talk/talk?agentId=${item.id}`,
+			url: `/subpkg/talk/talk?agentId=${item.id}&aiIcon=${item.icon}`,
 			success: (res) => {
 				console.log('跳转成功')
 			},
@@ -46,7 +46,7 @@
 
 				<uni-list-chat
 					class="listItem"
-					v-for="(item, index) in assList"
+					v-for="item in assList"
 					:key="item.assistantId"
 					:avatar-circle="true"
 					:title="item.name"
