@@ -42,26 +42,34 @@
 				// "enablePullDownRefresh": false
 			}
 
-		}, {
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": ""
-				// "enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/talk/talk",
-			"style": {
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/resume/resume",
-			"style": {
-				"navigationBarTitleText": ""
-			}
 		}
 	],
+
+	// 分包加载
+	"subPackages": [{
+		"root": "subpkg",
+		"pages": [{
+				"path": "login/login",
+				"style": {
+					"navigationBarTitleText": "登录页"
+				}
+			},
+			{
+				"path": "resume/resume",
+				"style": {
+					"navigationBarTitleText": "简历页"
+				}
+			},
+			{
+				"path": "talk/talk",
+				"style": {
+					"navigationBarTitleText": "对话页"
+				}
+			}
+		]
+	}],
+
+
 	"globalStyle": {
 		// 颜色名只支持 H5，wx只能十六进制，去看wx小程序文档
 		"navigationBarTextStyle": "black",
@@ -69,6 +77,7 @@
 		"navigationBarBackgroundColor": "#ffffff",
 		"backgroundColor": "#F8F8F8"
 	},
+	"lazyCodeLoading": "requiredComponents",
 	"tabBar": {
 		"color": "#bfbfbf", // 未选中时文字颜色
 		"selectedColor": "#78c5c0", // 选中时文字颜色 $uni-color-primary: #78c5c0
@@ -99,16 +108,5 @@
 			}
 		]
 	},
-	"subPackages": [{
-		"root": "subpkg_task",
-		"pages": [{
-			"path": "rootpkg/rootpkg",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-
-		}]
-	}],
 	"uniIdRouter": {}
 }

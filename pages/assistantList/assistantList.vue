@@ -14,7 +14,7 @@
 		// 跳转过去
 		console.log(item)
 		uni.navigateTo({
-			url: `/pages/talk/talk?agentId=${item.id}`,
+			url: `/subpck/talk/talk?agentId=${item.id}`,
 			success: (res) => {
 				console.log('跳转成功')
 			},
@@ -54,7 +54,6 @@
 					:note="item.description"
 					note-style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
 					:clickable="true"
-					link="navigateTo: "
 					@click="goTalk(item)"
 				></uni-list-chat>
 			</uni-list>

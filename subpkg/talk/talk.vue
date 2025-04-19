@@ -2,7 +2,7 @@
 	import { onLoad } from '@dcloudio/uni-app'
 	import { ref, nextTick, onMounted } from 'vue'
 	import { sendMessageApi } from '@/apis/sendMessage.js'
-	import { throttle } from '@/utils/throttleDebounce.js'
+	// import { throttle } from '@/utils/throttleDebounce.js'
 	import { getConversationContentApi } from '@/apis/getConversationContent.js'
 	import { useResumeData } from '@/stores/resumeData.js'
 
@@ -125,65 +125,7 @@
 			messages.value = oldMessages
 			console.log('messages.value', messages.value)
 		}
-		// 然后再发送返回消息的请求
-		// const msgFirst = 'msgFirst'
-		// const msgBackFromHistory = 'msgBackFromHistory'
-		// const _sendData = JSON.stringify({
-		// 	...((conversationId !== 0 && { content: msgBackFromHistory }) || {
-		// 		content: msgFirst
-		// 	}),
-		// 	...(conversationId !== 0 && { conversationId }),
-		// 	...(agentId !== 0 && { agentId })
-		// })
-		// const res = await sendMessageApi(_sendData)
-		// console.log(
-		// 	'初始请求成功',
-		// 	'conversationId为:',
-		// 	conversationId,
-		// 	'发送的参数为：',
-		// 	_sendData
-		// )
-		// conversationId = res.data.conversationId
 		isAvailable.value = true
-		// const aiMsg = {
-		// 	senderRole: 'ai',
-		// 	content: ''
-		// }
-		// messages.value.push(aiMsg)
-		// const fakeStreamText = res.data.completeContent
-		// let scrollFlag = ref(0)
-		// for (const char of fakeStreamText) {
-		// 	await new Promise((resolve) => setTimeout(resolve, 30))
-		// 	scrollFlag.value++
-		// 	aiMsg.content += char
-		// 	if (scrollFlag.value % 5 == 0) {
-		// 		await nextTick()
-		// 		toTop()
-		// 	}
-		// 	messages.value = [...messages.value]
-		// }
-		// } catch (err) {
-		// 	console.log('进入了mount的catch', err)
-		// 	isAvailable.value = true
-		// 	const aiMsg = {
-		// 		senderRole: 'ai',
-		// 		content: ''
-		// 	}
-		// 	messages.value.push(aiMsg)
-		// 	let scrollFlag = ref(0)
-		// 	const fakeStreamText = '出错了，但你仍然可以尝试询问我哦。'
-		// 	for (const char of fakeStreamText) {
-		// 		await new Promise((resolve) => setTimeout(resolve, 30))
-		// 		aiMsg.content += char
-		// 		scrollFlag.value++
-		// 		if (scrollFlag.value % 5 == 0) {
-		// 			await nextTick()
-		// 			toTop()
-		// 		}
-
-		// 		messages.value = [...messages.value]
-		// 	}
-		// }
 	})
 	const handleSendWithThrottle = throttle(handleSend)
 	let scrollTop = ref(0)
@@ -307,6 +249,7 @@
 						.assistantPic {
 							width: 80rpx;
 							height: 80rpx;
+							margin-bottom: 18rpx;
 							border-radius: 50%;
 							// background-color: red;
 							display: flex;
@@ -314,12 +257,13 @@
 							justify-content: center;
 							font-size: 40rpx;
 							color: white;
+							flex-shrink: 0;
 						}
 						.bubble {
 							margin: 18rpx;
 							padding: 18rpx;
 							border-radius: 16rpx;
-							width: 80vw;
+							max-width: 80vw;
 							line-height: 1.75;
 							word-break: break-word;
 						}
@@ -379,6 +323,7 @@
 				text-align: center;
 				box-sizing: border-box;
 				padding: 8rpx;
+				padding-bottom: 32rpx;
 				font-size: 18rpx;
 				background-color: $uni-primary;
 				align-self: center;

@@ -41,7 +41,7 @@
 		// console.log(item)
 		// 跳转过去
 		uni.navigateTo({
-			url: `/pages/talk/talk?conversationId=${item.id}`,
+			url: `/subpkg/talk/talk?conversationId=${item.id}`,
 			success: (res) => {
 				console.log('跳转成功')
 			},
