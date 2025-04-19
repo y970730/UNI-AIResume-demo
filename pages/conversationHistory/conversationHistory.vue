@@ -38,7 +38,7 @@
 	async function handleChatClick(item) {
 		// const data = { conversationId: item.id, page: 0, size: 10, desc: true }
 		// const res = await getConversationContentApi(data)
-		// console.log(item)
+		console.log('看看item：', item)
 		// 跳转过去
 		uni.navigateTo({
 			url: `/subpkg/talk/talk?conversationId=${item.id}`,

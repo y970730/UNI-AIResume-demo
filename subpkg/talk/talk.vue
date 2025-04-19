@@ -124,7 +124,7 @@
 			const res = await getConversationContentApi(JSON.stringify(_data))
 			console.log('聊天消息', res.data.data)
 			let oldMessages = res.data.data
-			console.log('oldMessages', oldMessages)
+			// console.log('oldMessages', oldMessages)
 			oldMessages = oldMessages.filter((msg) => {
 				// console.log(msg)
 				return (
@@ -133,8 +133,9 @@
 			})
 			// 临时颠倒数组顺序
 			messages.value = oldMessages.reverse()
-			// 颠倒顺序为【1]，正常情况是【0]
-			aiIcon = messages.value[1].senderIcon
+			const result = messages.value.find((item) => item.senderRole === 'ai')
+			console.log('result?', result)
+			aiIcon = result.senderIcon
 			console.log('messages.value', messages.value)
 		}
 		isAvailable.value = true
